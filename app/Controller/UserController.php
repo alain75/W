@@ -3,11 +3,64 @@
 
 	use \W\Controller\Controller;
 	use \Manager\UserManager;
+	use \W\security\authentificationManager
 
 	class UserController extends Controller
 	{
+
+		public function logout()
+		{
+			$am = new authentificationManager();
+			$am->logUserOut();
+			$this->redirectionToRoute('login');
+		}
+
+		public function login()
+		{
+			$am = new authentificationManager();
+			$error="";
+			$username="";
+			$date = [];
+
+			// traitement du formulaire
+			if(!empty($_POST)){
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+
+				$result = $am->isValidLoginInfo($username, $password);
+
+				// si valide : connexion
+				if($result > 0){
+					$userId = $result;
+
+					// récuper l'utilisateur
+					$UserManager = new \Manager\UserManager();
+					$user = $UserManager->find($userId);
+
+					// connexion l'user
+					$am->loginUserIn($user);
+
+					// redirection
+
+					$this->redirectionToRoute('show_all_terms');
+
+					
+				}else{
+					$error = "Mauvais identifiants !";
+				}
+			}
+
+			$date['error'] = $error;
+			$data['username'] = $username;
+			$this->show('user/login', $data)
+		}
 		public function register()
 		{
+			$this->allowTo('admin');
+			$user = $this->getUser();
+
+			
+
 			$UserManager = new UserManager();
 			$error = "";
 			$username = "";
@@ -35,6 +88,8 @@
 					if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 						$error = "email non valide !";
 					}
+
+					// email present
 
 					// mot de passe correspondent
 					if($password != $password_confirm){

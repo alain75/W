@@ -18,4 +18,7 @@
 	
 		// Connexion
 		['GET|POST', '/admin/connexion/', 'user#login', 'login'], 
+
+		// Deconnexion
+		['GET|POST', '/admin/deconnexion/', 'user#logout', 'logout'], 
 	);
