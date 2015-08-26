@@ -12,7 +12,7 @@
 		{
 			$am = new authentificationManager();
 			$am->logUserOut();
-			$this->redirectionToRoute('login');
+			$this->redirectToRoute('login');
 		}
 
 		public function login()
@@ -42,7 +42,7 @@
 
 					// redirection
 
-					$this->redirectionToRoute('show_all_terms');
+					$this->redirectToRoute('show_all_terms');
 
 					
 				}else{
@@ -102,7 +102,7 @@
 
 						}
 						// hacher le mot de passe 
-						$hashedPasssword  = password_hash($password, PASSWORD_DEFAULT);
+						$hashedPassword  = password_hash($password, PASSWORD_DEFAULT);
 						
 						$newAdmin = [
 									"username" 		=> $username,
